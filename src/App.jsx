@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
-import Menu from "./components/Menu";
+
 import Hero from "./components/Hero";
 import Navbar from "./components/Navbar";
 import AboutUs from "./components/AboutUs";
