@@ -14,7 +14,7 @@ body:has(.about-page) {
   font-family: Arial, sans-serif;
   color: white;
   background: radial-gradient(ellipse 90% 70% at 50% 20%, #A1887F 0%, #5D3E36 45%, #110806 100%);
-  /* NO overflow:hidden, NO overflow-y:auto — let body scroll naturally */
+  transition: background 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* ── HERO ── */
@@ -25,7 +25,7 @@ body:has(.about-page) {
   justify-content: center;
   position: relative;
   overflow: hidden;
-  padding: 100px 8% 60px;
+  padding: 10px 8% 90px;
 }
 
 .about-hero-inner {
@@ -61,7 +61,7 @@ body:has(.about-page) {
 }
 
 .about-hero-line--accent {
-  color: rgba(255, 200, 160, 0.95);
+  color: rgba(255, 183, 131, 0.942);
   font-style: italic;
 }
 

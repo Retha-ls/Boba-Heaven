@@ -42,7 +42,7 @@ const RESPONSES = {
   order: [
     "Ordering is super easy 🛵",
     <span key="order-app">We're on the <strong>Local Bites</strong> app for delivery!</span>,
-    <span key="order-link">Order here → <a href="https://store.localbites.co.ls/categories/cafe/" target="_blank" rel="noreferrer">store.localbites.co.ls</a></span>,
+    <span key="order-link">Order here → <a href="https://store.localbites.co.ls/stores/boba-heaven/" target="_blank" rel="noreferrer">https://store.localbites.co.ls/stores/boba-heaven/</a></span>,
   ],
   contact: [
     "Here's how to reach us 📬",

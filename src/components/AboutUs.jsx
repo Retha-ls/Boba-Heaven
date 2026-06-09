@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import "./AboutUs.css";
 import Navbar from "./Navbar";
@@ -31,10 +31,13 @@ export default function AboutUs() {
   const heroRef    = useRef(null);
   const taglineRef = useRef(null);
   const statsRef   = useRef(null);
-  const [chatOpen, setChatOpen] = useState(false);
 
   useEffect(() => {
-    // Hero headline animation
+    const saved = localStorage.getItem("bobaGradient") || "g3";
+    document.querySelector(".about-page")?.classList.add(saved);
+  }, []);
+
+  useEffect(() => {
     const lines = heroRef.current.querySelectorAll(".about-hero-line");
     gsap.fromTo(lines,
       { opacity: 0, y: 60, skewY: 4 },
@@ -45,10 +48,9 @@ export default function AboutUs() {
       { opacity: 1, y: 0, duration: 0.8, ease: "power3.out", delay: 0.85 }
     );
 
-    // Auto-scroll to stats section after 3 seconds
     const timer = setTimeout(() => {
       statsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-    }, 1400);
+    }, 1500);
 
     return () => clearTimeout(timer);
   }, []);
@@ -87,7 +89,10 @@ export default function AboutUs() {
       {/* ── STORY ── */}
       <section className="about-story">
         <div className="about-story-inner">
-          <div className="about-story-label">Who We Are</div>
+          <div className="about-story-left">
+            <div className="about-story-label">Who We Are</div>
+            <div className="about-story-rule" />
+          </div>
           <div className="about-story-body">
             <p>
               Boba Heaven LS was created to bring the fun, creativity, and culture
@@ -121,7 +126,10 @@ export default function AboutUs() {
 
       {/* ── PILLARS ── */}
       <section className="about-pillars">
-        <h2 className="pillars-heading">What We Stand For</h2>
+        <div className="pillars-header">
+          <span className="pillars-eyebrow">What We Stand For</span>
+          <h2 className="pillars-heading">Three things we<br /><em>never compromise on.</em></h2>
+        </div>
         <div className="pillars-grid">
           {pillars.map((p, i) => (
             <div className="pillar-card" key={i}>
@@ -134,56 +142,15 @@ export default function AboutUs() {
       </section>
 
       {/* ── CTA ── */}
-            <section className="about-cta">
+      <section className="about-cta">
         <div className="about-cta-inner">
           <p className="cta-eyebrow">Ready to sip?</p>
-          <h2 className="cta-heading">Your first cup is waiting.</h2>
-          <a href="/" className="cta-btn">
-            Explore the Menu →
-          </a>
+          <h2 className="cta-heading">Your first cup<br />is waiting.</h2>
+          <a href="/" className="cta-btn">Explore the Menu →</a>
         </div>
-
         <div className="cta-glow" />
       </section>
 
-      {/* MOBILE CHAT BUTTON */}
-      <button
-        className="chat-widget-btn"
-        onClick={() => setChatOpen(true)}
-      >
-        💬
-      </button>
-
-      {/* CHAT MODAL */}
-      {chatOpen && (
-        <div
-          className="chat-modal-overlay"
-          onClick={() => setChatOpen(false)}
-        >
-          <div
-            className="chat-modal"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="chat-header">
-              <span>Boba Assistant</span>
-
-              <button
-                className="chat-close"
-                onClick={() => setChatOpen(false)}
-              >
-                ✕
-              </button>
-            </div>
-
-            <div className="chat-body">
-              <p>Hello! How can I help?</p>
-
-              {/* Replace with your chatbot component */}
-              {/* <ChatBot /> */}
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

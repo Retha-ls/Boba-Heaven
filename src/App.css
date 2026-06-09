@@ -12,6 +12,7 @@ body {
 .app {
   height: 100vh;
   overflow: hidden;
+  transition: background 0.8s cubic-bezier(0.4, 0, 0.2, 1); /* sync with GSAP */
 }
 
 /* ================= BACKGROUNDS ================= */
@@ -193,7 +194,7 @@ body {
   font-size: 14px;
   line-height: 1.85;
   color: rgba(255, 255, 255, 0.8);
-  max-width: 300px;
+  max-width: 380px;
   font-weight: 400;
   letter-spacing: 0.3px;
 }
@@ -259,7 +260,7 @@ body {
 }
 
 .shop-btn {
-  width:auto;
+  width:10rem;
   margin-top: 8px;
   background: rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(10px);
@@ -349,7 +350,8 @@ body {
 .arrow {
   width: 44px;
   height: 44px;
-  border-radius: 50%;
+  margin:0.5rem;
+  border-radius: 100%;
   background: rgba(255, 255, 255, 0.18);
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.25);
@@ -431,7 +433,10 @@ body {
 }
 
 /* ================= RESPONSIVE ================= */
-
+@media (prefers-reduced-motion: reduce) {
+  .app { transition: none; }
+  .boba { animation: none; }
+}
 /* Tablet */
 @media (max-width: 1024px) {
   body { overflow: hidden; }
@@ -446,6 +451,7 @@ body {
     overflow-y: auto;
     height: 100vh;
   }
+  
 
   .left  { order: 1; align-items: center; margin-bottom: 20px; }
   .center { order: 2; padding-bottom: 20px; }

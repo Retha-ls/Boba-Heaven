@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
 
@@ -46,79 +46,78 @@ const slides = [
 ];
 
 function Home() {
-  const [active, setActive] = useState(0);
+  const [active, setActive]       = useState(0);
   const [direction, setDirection] = useState("next");
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading]     = useState(true);
 
-  const appRef = useRef(null);
+  const appRef       = useRef(null);
   const prevGradient = useRef(slides[0].gradient);
 
-  // Wait until first hero image loads
-  useEffect(() => {
-    const img = new Image();
-
-    img.src = slides[0].image;
-
-    img.onload = () => {
-      setLoading(false);
-    };
-
-    img.onerror = () => {
-      setLoading(false);
-    };
-  }, []);
-
-  const nextSlide = () => {
+  const nextSlide = useCallback(() => {
     setDirection("next");
     setActive((prev) => (prev + 1) % slides.length);
-  };
+  }, []);
 
-  const prevSlide = () => {
+  const prevSlide = useCallback(() => {
     setDirection("prev");
     setActive((prev) => (prev - 1 + slides.length) % slides.length);
-  };
+  }, []);
 
-  const goToSlide = (index) => {
+  const goToSlide = useCallback((index) => {
     setDirection(index > active ? "next" : "prev");
     setActive(index);
-  };
+  }, [active]);
+  
+  // Preload all images before showing anything
+  useEffect(() => {
+    let loaded = 0;
+    const images = slides.map(s => s.image);
+
+    images.forEach(src => {
+      const img = new Image();
+      img.src = src;
+      img.onload = img.onerror = () => {
+        loaded++;
+        if (loaded === images.length) setLoading(false);
+      };
+    });
+  }, []);
+
+  // Auto-advance every 9 seconds
+  useEffect(() => {
+    const timer = setInterval(() => {
+      nextSlide();
+    }, 9000);
+    return () => clearInterval(timer);
+  }, [active, nextSlide]);
 
   // Keyboard navigation
   useEffect(() => {
     const handleKey = (e) => {
       if (e.key === "ArrowRight") nextSlide();
-      if (e.key === "ArrowLeft") prevSlide();
+      if (e.key === "ArrowLeft")  prevSlide();
     };
-
     window.addEventListener("keydown", handleKey);
-
-    return () => {
-      window.removeEventListener("keydown", handleKey);
-    };
-  }, []);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, [nextSlide, prevSlide]);
 
   // Background gradient switching
   useEffect(() => {
     const el = appRef.current;
     if (!el) return;
-
     el.classList.remove(prevGradient.current);
     el.classList.add(slides[active].gradient);
-
     prevGradient.current = slides[active].gradient;
   }, [active]);
 
   const nextIndex = (active + 1) % slides.length;
   const prevIndex = (active - 1 + slides.length) % slides.length;
 
-  if (loading) {
-    return <Loader />;
-  }
+  if (loading) return <Loader />;
 
   return (
     <div ref={appRef} className={`app ${slides[active].gradient}`}>
       <Navbar />
-
       <Hero
         slide={slides[active]}
         nextSlide={nextSlide}
@@ -138,8 +137,8 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<AboutUs />} />
+        <Route path="/"        element={<Home />}    />
+        <Route path="/about"   element={<AboutUs />} />
         <Route path="/contact" element={<Contact />} />
       </Routes>
     </BrowserRouter>
