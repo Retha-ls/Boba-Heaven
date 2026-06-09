@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 
 export default function Hero({
@@ -12,6 +12,15 @@ export default function Hero({
   const detailRef    = useRef(null);
   const containerRef = useRef(null);
   const heroRef      = useRef(null);
+  const [showSwipeHint, setShowSwipeHint] = useState(true);
+
+  // Hide swipe hint after 3 seconds
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowSwipeHint(false);
+    }, 1500);
+    return () => clearTimeout(timer);
+  }, []);
 
   // GSAP entrance animation
   useEffect(() => {
@@ -71,52 +80,63 @@ export default function Hero({
 
   }, [slide, direction]);
 
-  // Non-passive touch listener to allow preventDefault
+  // Touch swipe handler - fixed to prevent errors
   useEffect(() => {
     const el = heroRef.current;
     if (!el) return;
 
-    let startX  = null;
-    let startY  = null;
-    let endX    = null;
-    let dragging = false;
+    let startX = null;
+    let startY = null;
+    let isSwiping = false;
 
-    const onStart = (e) => {
-      startX   = e.targetTouches[0].clientX;
-      startY   = e.targetTouches[0].clientY;
-      endX     = null;
-      dragging = false;
+    const handleTouchStart = (e) => {
+      startX = e.touches[0].clientX;
+      startY = e.touches[0].clientY;
+      isSwiping = false;
     };
 
-    const onMove = (e) => {
-      const dx = Math.abs(e.targetTouches[0].clientX - startX);
-      const dy = Math.abs(e.targetTouches[0].clientY - startY);
-      if (!dragging && dx > dy + 6) dragging = true;
-      if (dragging) {
+    const handleTouchMove = (e) => {
+      if (!startX) return;
+      
+      const deltaX = Math.abs(e.touches[0].clientX - startX);
+      const deltaY = Math.abs(e.touches[0].clientY - startY);
+      
+      // If horizontal swipe, prevent scrolling
+      if (deltaX > deltaY && deltaX > 10) {
         e.preventDefault();
-        endX = e.targetTouches[0].clientX;
+        isSwiping = true;
       }
     };
 
-    const onEnd = () => {
-      if (!dragging || endX === null) return;
-      const delta = startX - endX;
-      if (Math.abs(delta) > 48) {
-        delta > 0 ? nextSlide() : prevSlide();
+    const handleTouchEnd = (e) => {
+      if (!startX || !isSwiping) {
+        startX = null;
+        return;
       }
-      startX   = null;
-      endX     = null;
-      dragging = false;
+      
+      const endX = e.changedTouches[0].clientX;
+      const deltaX = endX - startX;
+      
+      if (Math.abs(deltaX) > 50) {
+        if (deltaX > 0) {
+          prevSlide();
+        } else {
+          nextSlide();
+        }
+      }
+      
+      startX = null;
+      isSwiping = false;
     };
 
-    el.addEventListener("touchstart", onStart, { passive: true });
-    el.addEventListener("touchmove",  onMove,  { passive: false });
-    el.addEventListener("touchend",   onEnd,   { passive: true });
+    el.addEventListener('touchstart', handleTouchStart, { passive: true });
+    el.addEventListener('touchmove', handleTouchMove, { passive: false });
+    el.addEventListener('touchend', handleTouchEnd, { passive: true });
 
     return () => {
-      el.removeEventListener("touchstart", onStart);
-      el.removeEventListener("touchmove",  onMove);
-      el.removeEventListener("touchend",   onEnd);
+      el.removeEventListener('touchstart', handleTouchStart);
+      el.removeEventListener('touchmove', handleTouchMove);
+      el.removeEventListener('touchend', handleTouchEnd);
     };
   }, [nextSlide, prevSlide]);
 
@@ -164,7 +184,16 @@ export default function Hero({
         <button className="arrow" aria-label="Next drink">→</button>
       </div>
 
-      {/* DOTS */}
+      {/* SWIPE INDICATOR - only shows on mobile/tablet */}
+      {showSwipeHint && (
+        <div className="swipe-indicator">
+          <span className="swipe-arrow-left">←</span>
+          <span className="swipe-text">swipe to explore</span>
+          <span className="swipe-arrow-right">→</span>
+        </div>
+      )}
+
+      {/* DOTS - static indicators */}
       <div className="dots">
         {Array.from({ length: total }).map((_, i) => (
           <button
@@ -178,7 +207,7 @@ export default function Hero({
 
       {/* SOCIALS */}
       <div className="socials">
-        <a href="https://www.tiktok.com/%40bobaheaven_ls?_r=1&_t=ZS-94A8bTnWFbo" aria-label="TikTok" target="_blank" rel="noreferrer">
+        <a href="https://www.tiktok.com/@bobaheaven_ls?lang=en" aria-label="TikTok" target="_blank" rel="noreferrer">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
             <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"/>
           </svg>
