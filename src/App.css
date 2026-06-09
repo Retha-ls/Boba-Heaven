@@ -371,11 +371,11 @@ body {
 /* ── DOTS ── */
 .dots {
   position: absolute;
-  bottom: 100px;     /* above socials */
+  bottom: 100px;
   left: 50%;
   transform: translateX(-50%);
-  display: none;     /* hidden on desktop */
-  gap: 8px;
+  display: none;
+  gap: 12px;
   align-items: center;
   z-index: 25;
 }
@@ -387,14 +387,18 @@ body {
   background: rgba(255, 255, 255, 0.35);
   border: none;
   cursor: pointer;
-  transition: background 0.3s, transform 0.3s;
+  transition: all 0.3s cubic-bezier(0.34, 1.2, 0.64, 1);
   padding: 0;
+  position: relative;
 }
 
 .dot-active {
   background: white;
-  transform: scale(1.35);
+  width: 24px;
+  border-radius: 20px;
+  transform: scale(1);
 }
+
 
 /* ── SOCIALS ── */
 .socials {
@@ -433,10 +437,6 @@ body {
 }
 
 /* ================= RESPONSIVE ================= */
-@media (prefers-reduced-motion: reduce) {
-  .app { transition: none; }
-  .boba { animation: none; }
-}
 /* Tablet */
 @media (max-width: 1024px) {
   body { overflow: hidden; }
@@ -447,17 +447,20 @@ body {
     align-items: start;
     align-content: start;
     gap: 0;
-    padding: 100px 8% 140px;
+    padding: 100px 8% 100px;
     overflow-y: auto;
     height: 100vh;
+    position: relative;
   }
   
 
   .left  { order: 1; align-items: center; margin-bottom: 20px; }
   .center { order: 2; padding-bottom: 20px; }
-  .right  { order: 3; align-items: center; gap: 10px; }
+  .right  { order: 3; align-items: center; gap: 10px; margin-bottom: 20px; }
 
-  .price { font-size: 52px; }
+  .price { 
+    font-size: 52px; 
+  }
   .title { font-size: 30px; }
   .boba  { width: 240px; height: auto; }
   .caption { bottom: 28px; }
@@ -465,8 +468,17 @@ body {
   .prev-preview { display: none; }
   .next-preview { display: none; }
 
-  /* Show dots on tablet */
-  .dots { display: flex; }
+  /* Show dots on tablet - position relative to hero bottom */
+  .dots { 
+    display: flex;
+    position: relative;
+    bottom: auto;
+    left: auto;
+    transform: none;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    order: 4;
+  }
 
   /* Hamburger visible, desktop nav hidden */
   .navbar    { display: none !important; }
@@ -476,27 +488,196 @@ body {
     gap: 5px;
   }
 
-  /* Shop button: make sure it doesn't crowd socials */
-  .shop-btn { margin-top: 4px; }
+  .shop-btn { 
+    margin-top: 4px;
+    margin-bottom: 0;
+  }
+  
+  /* Socials - position relative */
+  .socials {
+    position: relative;
+    bottom: auto;
+    left: auto;
+    transform: none;
+    margin-top: 0;
+    margin-bottom: 0;
+    order: 5;
+  }
+  
+  /* Make hero use flex column for better control */
+  .hero {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
 }
 
 /* Mobile */
 @media (max-width: 600px) {
   .hero {
-    padding: 90px 6% 150px;
-    gap: 0;
+    padding: 90px 6% 30px;
   }
 
   .title { font-size: 26px; letter-spacing: -1.5px; }
-  .price { font-size: 44px; letter-spacing: -2px; }
-  .desc  { font-size: 13px; }
+  .price { 
+    font-size: 44px; 
+    letter-spacing: -2px;
+  }
+  .desc  { 
+    font-size: 13px;
+  }
   .boba  { width: 200px; }
 
-  .socials { bottom: 28px; gap: 16px; }
+  .right {
+    gap: 12px;
+    margin-bottom: 15px;
+  }
+  
+  .shop-btn {
+    margin-top: 8px;
+    width: 8rem;
+  }
+  
+  .details {
+    max-width: 200px;
+  }
+  
+  .dots { 
+    margin-top: 15px;
+    margin-bottom: 15px;
+  }
+  
+  .socials { 
+    gap: 16px;
+    margin-top: 5px;
+  }
   .socials a { width: 38px; height: 38px; }
-
-  .dots { bottom: 88px; }
 
   .logo-text { font-size: 13px; }
   .logo-img  { height: 32px; }
+}
+
+/* Specific fix for 390x844 and similar devices */
+@media (max-width: 430px) and (max-height: 900px) {
+  .hero {
+    padding: 80px 6% 20px;
+  }
+  
+  .left {
+    margin-bottom: 10px;
+  }
+  
+  .title {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  
+  .eyebrow {
+    margin-bottom: 8px;
+    font-size: 10px;
+  }
+  
+  .desc {
+    font-size: 12px;
+    min-height: auto;
+    max-width: 280px;
+  }
+  
+  .boba {
+    width: 160px;
+  }
+  
+  .center {
+    padding-bottom: 10px;
+  }
+  
+  .caption {
+    bottom: 15px;
+    font-size: 9px;
+  }
+  
+  .price {
+    font-size: 38px;
+  }
+  
+  .right {
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  
+  .details {
+    font-size: 11px;
+    max-width: 180px;
+  }
+  
+  .shop-btn {
+    width: 7rem;
+    padding: 8px 16px;
+    font-size: 11px;
+    margin-top: 4px;
+  }
+  
+  .dots {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    gap: 6px;
+  }
+  
+  .dot {
+    width: 6px;
+    height: 6px;
+  }
+  
+  .socials {
+    gap: 12px;
+  }
+  
+  .socials a {
+    width: 32px;
+    height: 32px;
+  }
+  
+  .socials svg {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+/* Alternative approach using CSS Grid for mobile */
+@media (max-width: 600px) {
+  .hero {
+    display: grid;
+    grid-template-rows: auto auto auto auto auto;
+    grid-template-columns: 1fr;
+    gap: 0;
+    align-items: start;
+    justify-items: center;
+  }
+  
+  .left {
+    grid-row: 1;
+    margin-bottom: 15px;
+  }
+  
+  .center {
+    grid-row: 2;
+    padding-bottom: 15px;
+  }
+  
+  .right {
+    grid-row: 3;
+    margin-bottom: 20px;
+  }
+  
+  .dots {
+    grid-row: 4;
+    position: relative;
+    margin: 15px 0;
+  }
+  
+  .socials {
+    grid-row: 5;
+    position: relative;
+    margin: 5px 0 20px 0;
+  }
 }

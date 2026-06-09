@@ -311,12 +311,11 @@ export default function Contact() {
   </div>
 
   {/* Mobile floating widget */}
-  <button
-    className="chat-widget-btn"
-    onClick={() => setChatOpen(true)}
-  >
-    <img src={logo} alt="Chat" />
-  </button>
+  <button className="chat-widget-btn" onClick={() => setChatOpen(true)}>
+  <img src={logo} alt="Chat" />
+
+  <span className="chat-badge" />
+</button>
 
   {/* Mobile modal */}
   {chatOpen && (

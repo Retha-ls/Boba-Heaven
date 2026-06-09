@@ -2,7 +2,6 @@
    ABOUT US PAGE — Boba Heaven LS
    ============================================ */
 
-/* Override the global overflow:hidden set by App.css for the home page */
 body:has(.about-page) {
   overflow: auto !important;
 }
@@ -15,6 +14,7 @@ body:has(.about-page) {
   color: white;
   background: radial-gradient(ellipse 90% 70% at 50% 20%, #A1887F 0%, #5D3E36 45%, #110806 100%);
   transition: background 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  padding-top: 90px;
 }
 
 /* ── HERO ── */
@@ -25,7 +25,7 @@ body:has(.about-page) {
   justify-content: center;
   position: relative;
   overflow: hidden;
-  padding: 10px 8% 90px;
+  padding: 10px 8% 0px;
 }
 
 .about-hero-inner {
@@ -61,7 +61,7 @@ body:has(.about-page) {
 }
 
 .about-hero-line--accent {
-  color: rgba(255, 183, 131, 0.942);
+  color: rgba(255, 200, 160, 0.95);
   font-style: italic;
 }
 
@@ -92,20 +92,24 @@ body:has(.about-page) {
 
 /* ── STATS STRIP ── */
 .about-stats {
+  width: min(1100px, 90%);
+  margin: -60px auto 0;
   display: flex;
   justify-content: center;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 100px 8%;
-  background: rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(10px);
+  gap: 0;
+  padding: 50px 30px;
+  border-radius: 32px;
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 20px 80px rgba(0,0,0,0.3);
+  position: relative;
+  z-index: 20;
 }
 
 .about-stat {
   flex: 1;
-  max-width: 260px;
   text-align: center;
-  padding: 0 24px;
   position: relative;
 }
 
@@ -113,97 +117,188 @@ body:has(.about-page) {
   content: "";
   position: absolute;
   left: 0;
-  top: 10%;
-  height: 80%;
+  top: 15%;
   width: 1px;
-  background: rgba(255, 255, 255, 0.12);
+  height: 70%;
+  background: rgba(255,255,255,0.12);
 }
 
 .stat-value {
   display: block;
-  font-size: 54px;
+  font-size: 60px;
   font-weight: 900;
   letter-spacing: -3px;
-  line-height: 1;
   color: white;
-  margin-bottom: 8px;
 }
 
 .stat-label {
+  display: block;
+  margin-top: 8px;
   font-size: 11px;
   letter-spacing: 3px;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.5);
-  font-weight: 400;
+  color: rgba(255,255,255,0.5);
 }
 
 /* ── STORY ── */
 .about-story {
-  padding: 120px 8%;
-  display: flex;
-  justify-content: center;
+  padding: 120px 8% 80px;
+  max-width: 1100px;
+  margin: 0 auto;
 }
 
+/* Pull-quote — full width, large opening statement */
+.about-story-pullquote {
+  display: flex;
+  align-items: flex-start;
+  gap: 24px;
+  margin-bottom: 72px;
+  padding-bottom: 64px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.pullquote-decoration {
+  font-size: 22px;
+  color: rgba(255, 200, 160, 0.6);
+  line-height: 1;
+  margin-top: 8px;
+  flex-shrink: 0;
+}
+
+.about-story-pullquote p {
+  font-size: clamp(22px, 2.8vw, 32px);
+  font-weight: 300;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.85);
+  letter-spacing: -0.3px;
+  margin: 0;
+}
+
+.about-story-pullquote em {
+  font-style: italic;
+  color: rgba(255, 200, 160, 0.95);
+}
+
+/* Two-column body */
 .about-story-inner {
   display: grid;
-  grid-template-columns: 200px 1fr;
-  gap: 64px;
-  max-width: 960px;
-  width: 100%;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
   align-items: start;
 }
 
-.about-story-label {
-  font-size: 11px;
-  letter-spacing: 4px;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.4);
-  padding-top: 6px;
-  position: sticky;
-  top: 40px;
-}
-
-.about-story-body {
+.about-story-col {
   display: flex;
   flex-direction: column;
-  gap: 28px;
+  gap: 16px;
 }
 
-.about-story-body p {
-  font-size: 18px;
+/* First sentence of each column — heavier, brighter */
+.story-lead {
+  font-size: 16px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.92);
+  line-height: 1.6;
+  letter-spacing: 0.1px;
+  margin: 0;
+}
+
+.about-story-col p:not(.story-lead) {
+  font-size: 15px;
   line-height: 1.85;
-  color: rgba(255, 255, 255, 0.75);
+  color: rgba(255, 255, 255, 0.55);
   font-weight: 300;
   letter-spacing: 0.2px;
+  margin: 0;
 }
 
-.about-story-body em {
-  font-style: italic;
-  color: rgba(255, 200, 160, 0.9);
+/* ── MISSION INTERSTITIAL ── */
+.about-mission-section {
+  padding: 100px 8%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+  text-align: center;
+  position: relative;
+}
+
+.about-mission-inner {
+  display: flex;
+  align-items: center;
+  gap: 36px;
+  width: 100%;
+  max-width: 860px;
+}
+
+.mission-rule {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(255, 200, 160, 0.3), transparent);
+  display: block;
+}
+
+/* For left rule, flip the gradient */
+.about-mission-inner .mission-rule:first-child {
+  background: linear-gradient(to left, transparent, rgba(255, 200, 160, 0.3), transparent);
 }
 
 .about-mission {
-  font-size: 20px !important;
-  color: rgba(255, 255, 255, 0.9) !important;
-  font-weight: 400 !important;
-  border-left: 2px solid rgba(255, 200, 160, 0.5);
-  padding-left: 24px;
-  margin-top: 12px;
+  font-size: clamp(28px, 4vw, 48px);
+  font-weight: 900;
+  letter-spacing: -1.5px;
+  line-height: 1.15;
+  color: white;
+  margin: 0;
+  flex-shrink: 0;
+  max-width: 560px;
+}
+
+.about-mission em {
+  font-style: italic;
+  color: rgba(255, 200, 160, 0.95);
+}
+
+.mission-sub {
+  font-size: 11px;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.3);
+  margin: 0;
 }
 
 /* ── PILLARS ── */
 .about-pillars {
-  padding: 80px 8% 120px;
+  padding: 40px 8% 120px;
 }
 
-.pillars-heading {
+.pillars-header {
+  text-align: center;
+  margin-bottom: 56px;
+}
+
+.pillars-eyebrow {
+  display: block;
   font-size: 11px;
   letter-spacing: 5px;
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.4);
   font-weight: 400;
-  text-align: center;
-  margin-bottom: 56px;
+  margin-bottom: 16px;
+}
+
+.pillars-heading {
+  font-size: clamp(28px, 4vw, 48px);
+  font-weight: 900;
+  letter-spacing: -1.5px;
+  line-height: 1.1;
+  color: white;
+  margin: 0;
+}
+
+.pillars-heading em {
+  font-style: italic;
+  color: rgba(255, 200, 160, 0.95);
 }
 
 .pillars-grid {
@@ -243,6 +338,7 @@ body:has(.about-page) {
   font-weight: 900;
   letter-spacing: -0.5px;
   color: white;
+  margin: 0;
 }
 
 .pillar-body {
@@ -250,6 +346,7 @@ body:has(.about-page) {
   line-height: 1.75;
   color: rgba(255, 255, 255, 0.6);
   font-weight: 300;
+  margin: 0;
 }
 
 /* ── CTA ── */
@@ -275,6 +372,7 @@ body:has(.about-page) {
   letter-spacing: 5px;
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.45);
+  margin: 0;
 }
 
 .cta-heading {
@@ -283,6 +381,7 @@ body:has(.about-page) {
   letter-spacing: -2.5px;
   line-height: 1;
   color: white;
+  margin: 0;
 }
 
 .cta-btn {
@@ -308,9 +407,6 @@ body:has(.about-page) {
   transform: translateY(-2px);
 }
 
-.about-page {
-  padding-top: 90px;
-}
 .cta-glow {
   position: absolute;
   width: 600px;
@@ -323,152 +419,71 @@ body:has(.about-page) {
   pointer-events: none;
   z-index: 1;
 }
+
+/* ── NAVBAR ── */
 .navbar-wrapper {
   position: fixed;
   top: 24px;
   left: 0;
   right: 0;
-
   z-index: 1000;
-}
-/* MOBILE CHAT WIDGET */
-
-.chat-widget-btn {
-  display: none;
-}
-
-@media (max-width: 768px) {
-  .chat-widget-btn {
-    display: flex;
-
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-
-    width: 60px;
-    height: 60px;
-
-    border-radius: 50%;
-    border: none;
-
-    background: rgba(255,255,255,0.15);
-
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-
-    color: white;
-    font-size: 24px;
-
-    align-items: center;
-    justify-content: center;
-
-    cursor: pointer;
-
-    z-index: 2000;
-  }
-
-  .chat-modal-overlay {
-    position: fixed;
-    inset: 0;
-
-    background: rgba(0,0,0,0.4);
-
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-
-    z-index: 3000;
-  }
-
-  .chat-modal {
-    width: 100%;
-    max-width: 450px;
-
-    height: 80vh;
-
-    background: rgba(20,20,20,0.9);
-
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-
-    border-radius: 24px 24px 0 0;
-
-    overflow: hidden;
-
-    animation: slideUp 0.3s ease;
-  }
-
-  .chat-header {
-    height: 65px;
-
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    padding: 0 20px;
-
-    color: white;
-    font-weight: 700;
-
-    border-bottom: 1px solid rgba(255,255,255,0.1);
-  }
-
-  .chat-close {
-    background: none;
-    border: none;
-
-    color: white;
-
-    font-size: 24px;
-    cursor: pointer;
-  }
-
-  .chat-body {
-    height: calc(80vh - 65px);
-
-    padding: 20px;
-
-    overflow-y: auto;
-
-    color: white;
-  }
-
-  @keyframes slideUp {
-    from {
-      transform: translateY(100%);
-    }
-
-    to {
-      transform: translateY(0);
-    }
-  }
 }
 
 /* ── RESPONSIVE ── */
 @media (max-width: 1024px) {
   .about-story-inner {
     grid-template-columns: 1fr;
-    gap: 32px;
+    gap: 40px;
   }
-  .about-story-label { position: static; }
-  .pillars-grid { grid-template-columns: 1fr; max-width: 480px; }
-  .about-stats { flex-direction: column; align-items: center; gap: 36px; }
+  .pillars-grid {
+    grid-template-columns: 1fr;
+    max-width: 480px;
+  }
+  .about-stats {
+    flex-direction: column;
+    align-items: center;
+    gap: 36px;
+  }
   .about-stat + .about-stat::before { display: none; }
-  .about-stat { padding: 0; }
   .stat-value { font-size: 44px; }
   .about-headline { letter-spacing: -2px; }
+  .about-mission-inner {
+    flex-direction: column;
+    gap: 20px;
+  }
+  .mission-rule { width: 60%; height: 1px; flex: unset; }
+}
+
+@media (max-width: 768px) {
+  .about-stats {
+    width: calc(100% - 30px);
+    margin-top: -40px;
+    padding: 28px 10px;
+    flex-direction: row;
+    justify-content: space-between;
+    border-radius: 24px;
+  }
+  .about-stat {
+    flex: 1;
+    padding: 0;
+  }
+  .about-stat:nth-child(3) { display: none; }
+  .about-stat + .about-stat::before { display: block; }
+  .stat-value { font-size: 34px; }
+  .stat-label { font-size: 9px; letter-spacing: 1.5px; }
+  .about-story-pullquote {
+    flex-direction: column;
+    gap: 16px;
+  }
 }
 
 @media (max-width: 600px) {
   .about-hero { padding: 100px 6% 60px; }
-  .about-story { padding: 72px 6%; }
-  .about-pillars { padding: 60px 6% 80px; }
+  .about-story { padding: 72px 6% 60px; }
+  .about-pillars { padding: 40px 6% 80px; }
   .about-cta { padding: 80px 6%; }
-  .about-story-body p { font-size: 16px; }
-  .about-mission { font-size: 17px !important; }
+  .about-mission-section { padding: 72px 6%; }
+  .about-story-pullquote p { font-size: 20px; }
   .bubble--lg { width: 300px; height: 300px; }
   .bubble--md { width: 200px; height: 200px; }
 }

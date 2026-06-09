@@ -50,7 +50,7 @@ body:has(.contact-page) {
   -webkit-backdrop-filter: blur(30px);
   border: 1px solid rgba(255, 200, 160, 0.15);
   border-radius: 28px;
-  padding: 40px 36px;
+  padding: 10px 30px;
   display: flex;
   flex-direction: column;
   gap: 28px;
@@ -541,6 +541,23 @@ body:has(.contact-page) {
     z-index: 3000;
     box-shadow: 0 10px 40px rgba(0,0,0,.35);
   }
+  .chat-badge {
+  position: absolute;
+  top: 4px;
+  right: 6px;
+  width: 12px;
+  height: 12px;
+  background: #ff3b3b;
+  border-radius: 50%;
+  border: 2px solid rgba(0,0,0,0.4);
+  box-shadow: 0 0 10px rgba(255, 59, 59, 0.7);
+}
+
+
+@keyframes pulseBadge {
+  0%   { transform: scale(1); opacity: 0.8; }
+  100% { transform: scale(2.4); opacity: 0; }
+}
 
   .chat-widget-btn img {
     width: 36px;
@@ -619,4 +636,17 @@ body:has(.contact-page) {
   .chat-wrapper {
     height: 460px;
   }
+}
+@keyframes chatAttention {
+  0%   { transform: translateY(0) rotate(0deg); }
+  10%  { transform: translateY(-6px) rotate(-3deg); }
+  20%  { transform: translateY(0) rotate(3deg); }
+  30%  { transform: translateY(-4px) rotate(-2deg); }
+  40%  { transform: translateY(0) rotate(2deg); }
+  50%  { transform: translateY(-2px) rotate(0deg); }
+  100% { transform: translateY(0) rotate(0deg); }
+}
+
+.chat-widget-btn {
+  animation: chatAttention 2.8s ease-in-out infinite;
 }

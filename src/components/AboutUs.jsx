@@ -49,8 +49,15 @@ export default function AboutUs() {
     );
 
     const timer = setTimeout(() => {
-      statsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-    }, 1500);
+      if (statsRef.current) {
+        const navbarHeight = 100;
+        const y =
+          statsRef.current.getBoundingClientRect().top +
+          window.pageYOffset -
+          navbarHeight;
+        window.scrollTo({ top: y, behavior: "smooth" });
+      }
+    }, 1600);
 
     return () => clearTimeout(timer);
   }, []);
@@ -88,40 +95,50 @@ export default function AboutUs() {
 
       {/* ── STORY ── */}
       <section className="about-story">
+
+        {/* Opening pull-quote — full width, large */}
+        <div className="about-story-pullquote">
+          <span className="pullquote-decoration">✦</span>
+          <p>
+            Boba Heaven LS was created to bring the fun, creativity, and culture
+            of bubble tea to Lesotho, to create more than just drinks.
+            We wanted to create an <em>experience.</em>
+          </p>
+        </div>
+
+        {/* Two-column body */}
         <div className="about-story-inner">
-          <div className="about-story-left">
-            <div className="about-story-label">Who We Are</div>
-            <div className="about-story-rule" />
+          <div className="about-story-col">
+            <p className="story-lead">Every cup is crafted to be refreshing, memorable, and full of flavour.</p>
+            <p>
+              From fruity refreshers and creamy signature blends to exciting
+              seasonal creations, we combine quality ingredients with creativity
+              to deliver drinks that genuinely stand out.
+            </p>
           </div>
-          <div className="about-story-body">
+          <div className="about-story-col">
+            <p className="story-lead">Bubble tea has become one of the world's most loved beverages.</p>
             <p>
-              Boba Heaven LS was created to bring the fun, creativity, and culture
-              of bubble tea to Lesotho. Inspired by the global love for boba and
-              the growing community of bubble tea enthusiasts around the world, we
-              set out to create more than just drinks — we wanted to create an
-              <em> experience.</em>
-            </p>
-            <p>
-              At Boba Heaven, every cup is crafted to be refreshing, memorable,
-              and full of flavour. From fruity refreshers and creamy signature
-              blends to exciting seasonal creations, we combine quality ingredients
-              with creativity to deliver drinks that stand out.
-            </p>
-            <p>
-              Bubble tea has become one of the world's most loved beverages, known
-              for bringing people together through unique flavours, colourful
-              presentation, and endless customization. We are proud to be part of
-              that movement by introducing a fresh and exciting drink culture to
-              Lesotho.
-            </p>
-            <p className="about-mission">
-              Our mission is simple: to create moments of happiness, one cup at a
-              time. Whether you're discovering boba for the first time or you're
-              already a devoted fan, Boba Heaven LS is your destination for
-              flavour, fun, and unforgettable sips.
+              Known for bringing people together through unique flavours,
+              colourful presentation, and endless customization — we're proud
+              to introduce that culture to Lesotho.
             </p>
           </div>
         </div>
+
+      </section>
+
+      {/* ── MISSION INTERSTITIAL ── */}
+      <section className="about-mission-section">
+        <div className="about-mission-inner">
+          <span className="mission-rule" />
+          <p className="about-mission">
+            Our mission is simple, to create moments of happiness,
+            <br /><em>ONE CUP AT A TIME.</em>
+          </p>
+          <span className="mission-rule" />
+        </div>
+        <p className="mission-sub">Made with love in Maseru.</p>
       </section>
 
       {/* ── PILLARS ── */}
