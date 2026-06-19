@@ -5,6 +5,7 @@ export default function Hero({
   slide, nextSlide, prevSlide,
   nextImage, prevImage,
   direction, activeIndex, total, goToSlide,
+  isHomeReady, imagesPreloaded
 }) {
   const descRef      = useRef(null);
   const priceRef     = useRef(null);
@@ -21,6 +22,15 @@ export default function Hero({
     }, 1500);
     return () => clearTimeout(timer);
   }, []);
+
+  // Preload next image when it changes (for smoother transitions)
+  useEffect(() => {
+    if (!isHomeReady) return;
+    
+    // Preload the next image in advance
+    const nextImg = new Image();
+    nextImg.src = nextImage;
+  }, [nextImage, isHomeReady]);
 
   // GSAP entrance animation
   useEffect(() => {
@@ -80,7 +90,7 @@ export default function Hero({
 
   }, [slide, direction]);
 
-  // Touch swipe handler - fixed to prevent errors
+  // Touch swipe handler
   useEffect(() => {
     const el = heroRef.current;
     if (!el) return;
@@ -101,7 +111,6 @@ export default function Hero({
       const deltaX = Math.abs(e.touches[0].clientX - startX);
       const deltaY = Math.abs(e.touches[0].clientY - startY);
       
-      // If horizontal swipe, prevent scrolling
       if (deltaX > deltaY && deltaX > 10) {
         e.preventDefault();
         isSwiping = true;
@@ -152,7 +161,7 @@ export default function Hero({
         <p ref={descRef} className="desc">{slide.description}</p>
       </div>
 
-      {/* CENTER */}
+      {/* CENTER - Image is already loaded when shown */}
       <div ref={containerRef} className="center">
         <img
           ref={imgRef}
@@ -174,17 +183,29 @@ export default function Hero({
 
       {/* PREV */}
       <div className="prev-preview" onClick={prevSlide}>
-        <img src={prevImage} className="prev-boba" alt="previous drink" loading="lazy" decoding="async" />
+        <img 
+          src={prevImage} 
+          className="prev-boba" 
+          alt="previous drink" 
+          loading="lazy" 
+          decoding="async"
+        />
         <button className="arrow" aria-label="Previous drink">←</button>
       </div>
 
       {/* NEXT */}
       <div className="next-preview" onClick={nextSlide}>
-        <img src={nextImage} className="next-boba" alt="next drink" loading="lazy" decoding="async" />
+        <img 
+          src={nextImage} 
+          className="next-boba" 
+          alt="next drink" 
+          loading="lazy" 
+          decoding="async"
+        />
         <button className="arrow" aria-label="Next drink">→</button>
       </div>
 
-      {/* SWIPE INDICATOR - only shows on mobile/tablet */}
+      {/* SWIPE INDICATOR */}
       {showSwipeHint && (
         <div className="swipe-indicator">
           <span className="swipe-arrow-left">←</span>
@@ -193,7 +214,7 @@ export default function Hero({
         </div>
       )}
 
-      {/* DOTS - static indicators */}
+      {/* DOTS */}
       <div className="dots">
         {Array.from({ length: total }).map((_, i) => (
           <button
@@ -209,7 +230,7 @@ export default function Hero({
       <div className="socials">
         <a href="https://www.tiktok.com/@bobaheaven_ls?lang=en" aria-label="TikTok" target="_blank" rel="noreferrer">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
-            <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"/>
+            <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"/>
           </svg>
         </a>
         <a href="https://www.instagram.com/bobaheavenls?igsh=MXRnZXhtZHlweXdoNg==" aria-label="Instagram" target="_blank" rel="noreferrer">

@@ -47,11 +47,17 @@ const slides = [
 ];
 
 function Home() {
-  const [active, setActive]       = useState(0);
+  const [active, setActive] = useState(0);
   const [direction, setDirection] = useState("next");
-  const [loading, setLoading]     = useState(true);
+  const [loading, setLoading] = useState(true);
+  const [isHomeReady, setIsHomeReady] = useState(false);
+  const [imagesPreloaded, setImagesPreloaded] = useState({
+    0: true, // First image loaded in loader
+    1: false,
+    2: false
+  });
 
-  const appRef       = useRef(null);
+  const appRef = useRef(null);
   const prevGradient = useRef(slides[0].gradient);
 
   const nextSlide = useCallback(() => {
@@ -68,41 +74,56 @@ function Home() {
     setDirection(index > active ? "next" : "prev");
     setActive(index);
   }, [active]);
-  
-  // Preload all images before showing anything
-  useEffect(() => {
-    let loaded = 0;
-    const images = slides.map(s => s.image);
 
-    images.forEach(src => {
+  const handleLoaderComplete = () => {
+    setLoading(false); // Remove loader, show home page
+    setTimeout(() => {
+      setIsHomeReady(true); // Home is ready
+    }, 100);
+  };
+
+  useEffect(() => {
+    if (!isHomeReady) return;
+
+    // Preload 2nd and 3rd images in background
+    const imagesToPreload = [
+      { src: slides[1].image, id: 1 },
+      { src: slides[2].image, id: 2 }
+    ];
+
+    imagesToPreload.forEach(({ src, id }) => {
       const img = new Image();
       img.src = src;
-      img.onload = img.onerror = () => {
-        loaded++;
-        if (loaded === images.length) setLoading(false);
+      img.onload = () => {
+        setImagesPreloaded(prev => ({ ...prev, [id]: true }));
+      };
+      img.onerror = () => {
+        setImagesPreloaded(prev => ({ ...prev, [id]: true }));
       };
     });
-  }, []);
+  }, [isHomeReady]);
 
-  // Auto-advance every 9 seconds
   useEffect(() => {
+    if (!isHomeReady) return;
+
     const timer = setInterval(() => {
       nextSlide();
     }, 9000);
-    return () => clearInterval(timer);
-  }, [active, nextSlide]);
 
-  // Keyboard navigation
+    return () => clearInterval(timer);
+  }, [isHomeReady, nextSlide]);
+
   useEffect(() => {
+    if (!isHomeReady) return;
+
     const handleKey = (e) => {
       if (e.key === "ArrowRight") nextSlide();
-      if (e.key === "ArrowLeft")  prevSlide();
+      if (e.key === "ArrowLeft") prevSlide();
     };
     window.addEventListener("keydown", handleKey);
     return () => window.removeEventListener("keydown", handleKey);
-  }, [nextSlide, prevSlide]);
+  }, [isHomeReady, nextSlide, prevSlide]);
 
-  // Background gradient switching
   useEffect(() => {
     const el = appRef.current;
     if (!el) return;
@@ -114,7 +135,8 @@ function Home() {
   const nextIndex = (active + 1) % slides.length;
   const prevIndex = (active - 1 + slides.length) % slides.length;
 
-  if (loading) return <Loader />;
+  // Show loader while loading
+  if (loading) return <Loader onComplete={handleLoaderComplete} />;
 
   return (
     <div ref={appRef} className={`app ${slides[active].gradient}`}>
@@ -129,6 +151,8 @@ function Home() {
         activeIndex={active}
         total={slides.length}
         goToSlide={goToSlide}
+        isHomeReady={isHomeReady}
+        imagesPreloaded={imagesPreloaded}
       />
     </div>
   );
@@ -138,8 +162,8 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/"        element={<Home />}    />
-        <Route path="/about"   element={<AboutUs />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<AboutUs />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/menu" element={<Menu />} />
       </Routes>
