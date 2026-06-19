@@ -1,16 +1,21 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
+import Navbar from "./Navbar";
 import "./Menu.css";
-
-// Dummy products data
+import boba1 from "../assets/boba1.png";
+import boba2 from "../assets/boba2.png";
+import boba3 from "../assets/boba3.png";
+import Matcha from "../assets/matcha_latte.png";
+import Strawberry from "../assets/Strawberry_Milk_Tea.png";
+import Icecoffee from "../assets/icecoffee.png";
 const products = [
   {
     id: 1,
     name: "Sunrise Popping",
-    price: "$6.99",
+    price: "M69.99",
     category: "Signature",
     description: "Bold black tea meets creamy milk with chewy tapioca pearls and golden caramel drizzle.",
-    image: "/images/boba1.png",
+    image: boba1,
     popularity: 98,
     isNew: false,
     isPopular: true,
@@ -20,10 +25,10 @@ const products = [
   {
     id: 2,
     name: "Blueberry Float",
-    price: "$7.99",
+    price: "M79.99",
     category: "Fruity",
     description: "Dreamy taro base swirled with coconut cream and popping blueberry boba.",
-    image: "/images/boba2.png",
+    image: boba2,
     popularity: 95,
     isNew: true,
     isPopular: true,
@@ -33,10 +38,10 @@ const products = [
   {
     id: 3,
     name: "Cloudy Chai",
-    price: "$8.99",
+    price: "M89.99",
     category: "Spiced",
     description: "Warming spiced chai with velvety milk and soft brown sugar pearls.",
-    image: "/images/boba3.png",
+    image: boba3,
     popularity: 92,
     isNew: false,
     isPopular: true,
@@ -46,10 +51,10 @@ const products = [
   {
     id: 4,
     name: "Matcha Dream",
-    price: "$7.49",
+    price: "M27.00",
     category: "Premium",
     description: "Ceremonial grade matcha with oat milk and honey pearls.",
-    image: "/images/boba1.png",
+    image: Matcha,
     popularity: 88,
     isNew: true,
     isPopular: false,
@@ -59,10 +64,10 @@ const products = [
   {
     id: 5,
     name: "Strawberry Kiss",
-    price: "$6.49",
+    price: "M22.00",
     category: "Fruity",
     description: "Fresh strawberry puree with lychee popping boba and coconut jelly.",
-    image: "/images/boba2.png",
+    image: Strawberry,
     popularity: 91,
     isNew: false,
     isPopular: true,
@@ -72,58 +77,18 @@ const products = [
   {
     id: 6,
     name: "Oreo Brulee",
-    price: "$8.49",
+    price: "M22.00",
     category: "Dessert",
     description: "Crushed oreo cookies with caramelized brulee cream and tapioca.",
-    image: "/images/boba3.png",
+    image: Icecoffee,
     popularity: 96,
     isNew: false,
     isPopular: true,
     size: "Large",
     calories: 520,
   },
-  {
-    id: 7,
-    name: "Thai Royal",
-    price: "$7.99",
-    category: "Signature",
-    description: "Authentic Thai tea with star anise and cardamom notes.",
-    image: "/images/boba1.png",
-    popularity: 87,
-    isNew: false,
-    isPopular: false,
-    size: "Regular",
-    calories: 390,
-  },
-  {
-    id: 8,
-    name: "Mango Tango",
-    price: "$7.29",
-    category: "Fruity",
-    description: "Sweet mango bliss with popping boba pearls and aloe vera.",
-    image: "/images/boba2.png",
-    popularity: 93,
-    isNew: true,
-    isPopular: false,
-    size: "Regular",
-    calories: 330,
-  },
-  {
-    id: 9,
-    name: "Brown Sugar",
-    price: "$8.99",
-    category: "Classic",
-    description: "Caramelized brown sugar with fresh milk and tiger stripes.",
-    image: "/images/boba3.png",
-    popularity: 99,
-    isNew: false,
-    isPopular: true,
-    size: "Large",
-    calories: 480,
-  },
 ];
 
-// Categories for filtering
 const categories = ["All", "Signature", "Fruity", "Spiced", "Premium", "Dessert", "Classic"];
 
 export default function Menu() {
@@ -134,7 +99,6 @@ export default function Menu() {
   const [showCart, setShowCart] = useState(false);
   const [addedToCart, setAddedToCart] = useState({});
 
-  // Filter and sort products
   const filteredProducts = products
     .filter(product => selectedCategory === "All" || product.category === selectedCategory)
     .filter(product => product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -151,7 +115,7 @@ export default function Menu() {
     setCart([...cart, { ...product, quantity: 1 }]);
     setAddedToCart({ ...addedToCart, [product.id]: true });
     setTimeout(() => {
-      setAddedToCart({ ...addedToCart, [product.id]: false });
+      setAddedToCart(prev => ({ ...prev, [product.id]: false }));
     }, 1000);
   };
 
@@ -170,6 +134,8 @@ export default function Menu() {
 
   return (
     <div className="menu-page">
+      <Navbar />
+
       {/* Hero Section */}
       <div className="menu-hero">
         <div className="menu-hero-content">
@@ -195,7 +161,6 @@ export default function Menu() {
       {/* Filters Bar */}
       <div className="menu-filters">
         <div className="filters-container">
-          {/* Search */}
           <div className="search-box">
             <svg className="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <circle cx="11" cy="11" r="8"/>
@@ -210,12 +175,11 @@ export default function Menu() {
             />
           </div>
 
-          {/* Categories */}
           <div className="categories-scroll">
             {categories.map(category => (
               <button
                 key={category}
-                className={`category-btn ${selectedCategory === category ? 'active' : ''}`}
+                className={`category-btn ${selectedCategory === category ? "active" : ""}`}
                 onClick={() => setSelectedCategory(category)}
               >
                 {category}
@@ -223,7 +187,6 @@ export default function Menu() {
             ))}
           </div>
 
-          {/* Sort */}
           <select className="sort-select" value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
             <option value="popularity">Most Popular</option>
             <option value="price-low">Price: Low to High</option>
@@ -231,7 +194,6 @@ export default function Menu() {
             <option value="name">Name A-Z</option>
           </select>
 
-          {/* Cart Button */}
           <button className="cart-icon-btn" onClick={() => setShowCart(true)}>
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <circle cx="9" cy="21" r="1"/>
@@ -246,21 +208,21 @@ export default function Menu() {
       {/* Products Grid */}
       <div className="products-grid">
         {filteredProducts.map((product, index) => (
-          <div 
-            key={product.id} 
-            className={`product-card ${addedToCart[product.id] ? 'added' : ''}`}
+          <div
+            key={product.id}
+            className={`product-card ${addedToCart[product.id] ? "added" : ""}`}
             style={{ animationDelay: `${index * 0.05}s` }}
           >
             {product.isNew && <span className="product-badge new">NEW</span>}
             {product.isPopular && !product.isNew && <span className="product-badge popular">POPULAR</span>}
-            
+
             <div className="product-image-wrapper">
               <img src={product.image} alt={product.name} className="product-image" />
               <div className="product-overlay">
                 <button className="quick-view-btn">Quick View</button>
               </div>
             </div>
-            
+
             <div className="product-info">
               <div className="product-header">
                 <h3 className="product-name">{product.name}</h3>
@@ -272,8 +234,8 @@ export default function Menu() {
                 <span className="product-calories">{product.calories} cal</span>
                 <span className="product-size">{product.size}</span>
               </div>
-              <button 
-                className={`add-to-cart-btn ${addedToCart[product.id] ? 'added' : ''}`}
+              <button
+                className={`add-to-cart-btn ${addedToCart[product.id] ? "added" : ""}`}
                 onClick={() => addToCart(product)}
               >
                 {addedToCart[product.id] ? (
@@ -298,7 +260,6 @@ export default function Menu() {
         ))}
       </div>
 
-      {/* Empty State */}
       {filteredProducts.length === 0 && (
         <div className="empty-state">
           <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1">

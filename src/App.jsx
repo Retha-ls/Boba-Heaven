@@ -7,6 +7,7 @@ import Navbar from "./components/Navbar";
 import AboutUs from "./components/AboutUs";
 import Contact from "./components/Contact";
 import Loader from "./components/Loader";
+import Menu from "./components/Menu";
 
 import boba1 from "./assets/boba1.png";
 import boba2 from "./assets/boba2.png";

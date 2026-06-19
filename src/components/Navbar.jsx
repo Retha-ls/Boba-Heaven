@@ -20,7 +20,7 @@ export default function Navbar() {
       <nav className="navbar">
         <div className="nav-links">
           <Link to="/">Home</Link>
-          <a href="#">Menu</a>
+          <Link to="/menu">Menu</Link>
           <Link to="/about">About</Link>
           <Link to="/contact">Contact</Link>
         </div>
@@ -40,9 +40,9 @@ export default function Navbar() {
       {/* Mobile dropdown */}
       {menuOpen && (
         <div className="mobile-menu">
-          <Link to="/"       onClick={() => setMenuOpen(false)}>Home</Link>
-          <a href="#"        onClick={() => setMenuOpen(false)}>Menu</a>
-          <Link to="/about"  onClick={() => setMenuOpen(false)}>About</Link>
+          <Link to="/"        onClick={() => setMenuOpen(false)}>Home</Link>
+          <Link to="/menu"    onClick={() => setMenuOpen(false)}>Menu</Link>
+          <Link to="/about"   onClick={() => setMenuOpen(false)}>About</Link>
           <Link to="/contact" onClick={() => setMenuOpen(false)}>Contact</Link>
         </div>
       )}
